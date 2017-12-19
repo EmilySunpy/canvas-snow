@@ -18,12 +18,12 @@ function start(){
 function Snow(x, y, s){
     this.x = x;
     this.y = y;
-    this.size = s;
+    this.z = s;
 
     this.Update = function(){
-        this.y += this.size ** 0.6;
+        this.y += this.z ** 0.6;
 
-        if (this.y >= canvas.height + this.size){
+        if (this.y >= canvas.height + this.z){
             var index = snow.indexOf(this);
             snow.splice(index, 1);
         }
@@ -33,7 +33,7 @@ function Snow(x, y, s){
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.beginPath();
-        ctx.ellipse(0, 0, this.size*0.8, this.size, 0, 0, 360, 0);
+        ctx.ellipse(0, 0, this.z*0.8, this.z, 0, 0, 360, 0);
         ctx.fill();
         ctx.restore();
     }
@@ -48,8 +48,8 @@ function mainLoop(){
 
     if (snow.length < snowLimit){
         var x = Math.random() * canvas.width;
-        var size = Math.random() * 6 + 2;
-        snow.push(new Snow(x, -8, size));
+        var z = Math.random() * 6 + 2;
+        snow.push(new Snow(x, -8, z));
     }
 
     for (var i = 0; i < snow.length; i++){
