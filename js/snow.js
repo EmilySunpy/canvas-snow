@@ -32,6 +32,14 @@ function Vec3(x, y, z){
                 dy ** 2 +
                 dz ** 2;
     }
+
+    this.forceAway = function(v){
+        var dx = this.x - v.x;
+        var dy = this.y - v.y;
+        var dz = this.z - v.z;
+
+        return new Vec3(dx, dy, dz);
+    }
 }
 
 function Snow(x, y, z){
@@ -42,7 +50,7 @@ function Snow(x, y, z){
 
         //Wind force
         for (var i = 0; i < wind.length; i++){
-            var force = wind.radius - wind.distanceTo(this.pos);
+            var force = wind.radius - wind[i].pos.distanceTo(this.pos);
             if (force > 0){ //We are close enough to get effected!
                 
             }
