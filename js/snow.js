@@ -40,6 +40,14 @@ function Vec3(x, y, z){
 
         return new Vec3(dx, dy, dz);
     }
+
+    this.signedForceAway = function(v){
+        var dx = this.x - v.x;
+        var dy = this.y - v.y;
+        var dz = this.z - v.z;
+
+        return new Vec3(Math.sign(dx), Math.sign(dy), Math.sign(dz));
+    }
 }
 
 function Snow(x, y, z){
@@ -50,9 +58,10 @@ function Snow(x, y, z){
 
         //Wind force
         for (var i = 0; i < wind.length; i++){
-            var force = wind.radius - wind[i].pos.distanceTo(this.pos);
+            var force = wind[i].radius - wind[i].pos.distanceTo(this.pos);
             if (force > 0){ //We are close enough to get effected!
-                
+                console.log("y");
+                this.pos.x -= wind[i].pos.forceAway(this.pos).x * (force * 0.01);
             }
         }
 
@@ -81,7 +90,12 @@ function Wind(x, y, z, r){
     }
 
     this.Draw = function(){
-        
+        ctx.save();
+        ctx.translate(this.pos.x, this.pos.y);
+        var a = this.radius/2;
+        ctx.rect(-a, -a, a, a);
+        ctx.fill();
+        ctx.restore();
     }
 }
 
@@ -105,7 +119,7 @@ function mainLoop(){
         var x = Math.random() * canvas.width;
         var y = Math.random() * canvas.height;
         var z = Math.random() * 6 + 2;
-        var radius = Math.random() * 9 + 3;
+        var radius = Math.random() * 9 + 60;
         wind.push(new Wind(x, y, z, radius));
     }
 
