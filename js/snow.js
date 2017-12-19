@@ -27,7 +27,7 @@ function Vec3(x, y, z){
         var dx = this.x - v.x;
         var dy = this.y - v.y;
         var dz = this.z - v.z;
-        
+
         return  dx ** 2 +
                 dy ** 2 +
                 dz ** 2;
@@ -42,7 +42,9 @@ function Snow(x, y, z){
 
         //Wind force
         for (var i = 0; i < wind.length; i++){
-            //if (x > )
+            if (wind.distanceTo(this.pos) < wind.radius){ //We are close enough to get effected!
+
+            }
         }
 
         if (this.pos.y >= canvas.height + this.pos.z){
@@ -63,7 +65,7 @@ function Snow(x, y, z){
 
 function Wind(x, y, z, r){
     this.pos = new Vec3(x, y, z);
-    this.r = r;
+    this.radius = r;
 
     this.Update = function(){
 
