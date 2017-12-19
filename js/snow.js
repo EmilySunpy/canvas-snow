@@ -92,8 +92,8 @@ function Wind(x, y, z, r){
     this.Draw = function(){
         ctx.save();
         ctx.translate(this.pos.x, this.pos.y);
-        var a = this.radius/2;
-        ctx.rect(-a, -a, a, a);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, this.radius, this.radius, 0, 0, 360, 0);
         ctx.fill();
         ctx.restore();
     }
