@@ -18,6 +18,20 @@ function Vec3(x, y, z){
     this.x = x;
     this.y = y;
     this.z = z;
+
+    this.distanceTo = function(v){
+        return this.distanceToSquare(v) ** 0.5;
+    }
+
+    this.distanceToSquare = function(v){
+        var dx = this.x - v.x;
+        var dy = this.y - v.y;
+        var dz = this.z - v.z;
+        
+        return  dx ** 2 +
+                dy ** 2 +
+                dz ** 2;
+    }
 }
 
 function Snow(x, y, z){
