@@ -70,10 +70,32 @@ function Vec3(x, y, z){
 
         return new Vec3(Math.sign(dx), Math.sign(dy), Math.sign(dz));
     }
+
+    this.length = function(){
+        return this.x + this.y + this.z;
+    }
+
+    this.lengthSq = function(){
+        return  this.x ** 2 +
+                this.y ** 2 +
+                this.z ** 2;
+    }
+
+    this.dot = function(v){
+        return this.x * v.x + this.y * v.y + this.z * v.z;
+    }
+
+    this.angleTo = function(v){
+        var t = this.dot(v) / ((this.lengthSq() * v.lengthSq()) ** 0.5);
+
+        return Math.acos(t);
+    }
 }
 
 function Snow(x, y, z){
     this.pos = new Vec3(x, y, z);
+    this.rot = 0;
+    this._lastPos = this.pos;
 
     this.Update = function(){
         this.pos.y += this.pos.z ** 0.6;
@@ -92,6 +114,12 @@ function Snow(x, y, z){
             var index = snow.indexOf(this);
             snow.splice(index, 1);
         }
+
+
+        this.rot = this.pos.angleTo(this._lastPos);
+        if (this.rot != 0)
+            console.log(this.rot);
+        this._lastPos = this.pos;
     }
 
     this.Draw = function(){
@@ -99,7 +127,7 @@ function Snow(x, y, z){
         ctx.save();
         ctx.translate(this.pos.x, this.pos.y);
         ctx.beginPath();
-        ctx.ellipse(0, 0, scale*0.6, scale, 0, 0, 360, 0);
+        ctx.ellipse(0, 0, scale*0.6, scale, this.rot, 0, 360, 0);
         ctx.fill();
         ctx.restore();
     }
