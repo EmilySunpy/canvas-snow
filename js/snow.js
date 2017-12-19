@@ -22,6 +22,11 @@ function Snow(x, y, s){
 
     this.Update = function(){
         this.y += this.size ** 0.6;
+
+        if (this.y >= canvas.height + this.size){
+            var index = snow.indexOf(this);
+            snow.splice(index, 1);
+        }
     }
 
     this.Draw = function(){
@@ -34,7 +39,7 @@ function Snow(x, y, s){
     }
 }
 
-var snowLimit = 10;
+var snowLimit = 500;
 var snow = [];
 
 function mainLoop(){
