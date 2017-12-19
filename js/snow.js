@@ -19,6 +19,28 @@ function Vec3(x, y, z){
     this.y = y;
     this.z = z;
 
+    this.Add = function(v){
+        this.x += v.x;
+        this.y += v.y;
+        this.z += v.z;
+    }
+
+    this.Sub = function(v){
+        this.x -= v.x;
+        this.y -= v.y;
+        this.z -= v.z;
+    }
+
+    this.Mult = function(v){
+        this.x *= v;
+        this.y *= v;
+        this.z *= v;
+    }
+
+    this.mult = function(v){
+        return new Vec3(this.x * v, this.y * v, this.z * v);
+    }
+
     this.distanceTo = function(v){
         return this.distanceToSquare(v) ** 0.5;
     }
@@ -60,10 +82,11 @@ function Snow(x, y, z){
         for (var i = 0; i < wind.length; i++){
             var force = wind[i].radius - wind[i].pos.distanceTo(this.pos);
             if (force > 0){ //We are close enough to get effected!
-                console.log("y");
-                this.pos.x -= wind[i].pos.forceAway(this.pos).x * (force * 0.01);
+                this.pos.Sub(wind[i].pos.forceAway(this.pos).mult(force * 0.01));
             }
         }
+
+        this.pos.z = Math.min(Math.max(2, this.pos.z), 16);
 
         if (this.pos.y >= canvas.height + this.pos.z){
             var index = snow.indexOf(this);
@@ -72,10 +95,11 @@ function Snow(x, y, z){
     }
 
     this.Draw = function(){
+        var scale = this.pos.z ** 0.8;
         ctx.save();
         ctx.translate(this.pos.x, this.pos.y);
         ctx.beginPath();
-        ctx.ellipse(0, 0, this.pos.z*0.8, this.pos.z, 0, 0, 360, 0);
+        ctx.ellipse(0, 0, scale*0.6, scale, 0, 0, 360, 0);
         ctx.fill();
         ctx.restore();
     }
@@ -102,11 +126,12 @@ function Wind(x, y, z, r){
 var snowLimit = 500;
 var snow = [];
 
-var windLimit = 2;
+var windLimit = 6;
 var wind = [];
-
+var run = true;
 function mainLoop(){
-    requestAnimationFrame(mainLoop);
+    if(run)
+        requestAnimationFrame(mainLoop);
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
     if (snow.length < snowLimit){
