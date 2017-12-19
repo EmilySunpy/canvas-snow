@@ -42,8 +42,9 @@ function Snow(x, y, z){
 
         //Wind force
         for (var i = 0; i < wind.length; i++){
-            if (wind.distanceTo(this.pos) < wind.radius){ //We are close enough to get effected!
-
+            var force = wind.radius - wind.distanceTo(this.pos);
+            if (force > 0){ //We are close enough to get effected!
+                
             }
         }
 
