@@ -14,16 +14,24 @@ function start(){
     mainLoop();
 }
 
-
-function Snow(x, y, z){
+function Vec3(x, y, z){
     this.x = x;
     this.y = y;
     this.z = z;
+}
+
+function Snow(x, y, z){
+    this.pos = new Vec3(x, y, z);
 
     this.Update = function(){
-        this.y += this.z ** 0.6;
+        this.pos.y += this.pos.z ** 0.6;
 
-        if (this.y >= canvas.height + this.z){
+        //Wind force
+        for (var i = 0; i < wind.length; i++){
+            //if (x > )
+        }
+
+        if (this.pos.y >= canvas.height + this.pos.z){
             var index = snow.indexOf(this);
             snow.splice(index, 1);
         }
@@ -31,18 +39,16 @@ function Snow(x, y, z){
 
     this.Draw = function(){
         ctx.save();
-        ctx.translate(this.x, this.y);
+        ctx.translate(this.pos.x, this.pos.y);
         ctx.beginPath();
-        ctx.ellipse(0, 0, this.z*0.8, this.z, 0, 0, 360, 0);
+        ctx.ellipse(0, 0, this.pos.z*0.8, this.pos.z, 0, 0, 360, 0);
         ctx.fill();
         ctx.restore();
     }
 }
 
 function Wind(x, y, z, r){
-    this.x = x;
-    this.y = y;
-    this.z = z;
+    this.pos = new Vec3(x, y, z);
     this.r = r;
 
     this.Update = function(){
